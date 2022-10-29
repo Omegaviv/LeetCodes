@@ -12,6 +12,14 @@ public:
         }
         return 30;
     }
+     int date_to_int(int Y,int M, int D, int minY)
+        {
+            
+            int date = 0;
+            for(int y = minY; y < Y; ++y) date += isLeapYear(y) ? 366 : 365;
+            for(int m = 1; m < M; ++m) date += dayInMonth(Y,m);
+            return date + D;
+        }
     int daysBetweenDates(string date1, string date2) {
         int y1 = stoi(date1.substr(0, 4));
         int m1 = stoi(date1.substr(5, 2));
@@ -22,34 +30,42 @@ public:
         int d2 = stoi(date2.substr(8, 2));
         
         
-        int days = 0;
         
-        while(m1!=1){
-            days-=dayInMonth(y1,m1-1);
-            m1--;
-        }
-        days-=d1;
+        int minY;
+        if(y1<y2) minY=y1;
+        else minY = y2;
         
-        while(m2!=1){
-            days+=dayInMonth(y2,m2-1);
-            m2--;
-        }
+        int days1 = date_to_int(y1,m1,d1,minY);
+        int days2  = date_to_int(y2,m2,d2, minY);
         
-        days+=d2;
-        if(y1>y2){
-            days=-days;
-            y1 = y1^y2;
-            y2 = y1^y2;
-            y1 = y1^y2;
-        }
-        while(y1!=y2){
+//         int days = 0;
+        
+//         while(m1!=1){
+//             days-=dayInMonth(y1,m1-1);
+//             m1--;
+//         }
+//         days-=d1;
+        
+//         while(m2!=1){
+//             days+=dayInMonth(y2,m2-1);
+//             m2--;
+//         }
+        
+//         days+=d2;
+//         if(y1>y2){
+//             days=-days;
+//             y1 = y1^y2;
+//             y2 = y1^y2;
+//             y1 = y1^y2;
+//         }
+//         while(y1!=y2){
     
-            if(isLeapYear(y1)) days+=366;
-            else days+=365;
-            y1++;
-        }
+//             if(isLeapYear(y1)) days+=366;
+//             else days+=365;
+//             y1++;
+//         }
         
-        return abs(days);
+        return abs(days2-days1);
         
         
         
